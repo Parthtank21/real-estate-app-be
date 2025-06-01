@@ -5,6 +5,11 @@ import morgan from "morgan";
 import express from "express";
 import bodyParser from "body-parser";
 
+import { authMiddleware } from "./middlewares/authMiddleware";
+
+import tenantRoutes from "./routes/tenantRoutes";
+import managerRoutes from "./routes/managerRoutes";
+
 // CONFIGURATIONS
 dotenv.config();
 const app = express();
@@ -20,6 +25,8 @@ app.use(cors());
 app.get("/home", (req, res) => {
   res.send("This is home route");
 });
+app.use("/tenants", authMiddleware(["tenant"]), tenantRoutes);
+app.use("/managers", authMiddleware(["manager"]), managerRoutes);
 
 // SERVER
 const port = process.env.PORT || 3002;
