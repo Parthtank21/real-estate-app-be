@@ -7,6 +7,7 @@ import bodyParser from "body-parser";
 
 import { authMiddleware } from "./middlewares/authMiddleware";
 
+import leaseRoutes from "./routes/leaseRoutes";
 import tenantRoutes from "./routes/tenantRoutes";
 import managerRoutes from "./routes/managerRoutes";
 import propertyRoutes from "./routes/propertyRoutes";
@@ -29,6 +30,7 @@ app.get("/home", (req, res) => {
 app.use("/properties", propertyRoutes);
 app.use("/tenants", authMiddleware(["tenant"]), tenantRoutes);
 app.use("/managers", authMiddleware(["manager"]), managerRoutes);
+app.use("/leases", authMiddleware(["manager", "tenant"]), leaseRoutes);
 
 // SERVER
 const port = process.env.PORT || 3002;
